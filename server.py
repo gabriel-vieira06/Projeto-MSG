@@ -3,9 +3,11 @@ import Pyro4.naming
 import threading
 import tkinter as tk
 
+@Pyro4.expose
+@Pyro4.behavior(instance_mode="single")
 class RemoteServer:
     def __init__(self):
-        self.nome   = None
+        self.clients = []
 
 class NameServer:
     def __init__(self):
@@ -49,9 +51,13 @@ nameServerGui.window = tk.Tk()
 nameServerGui.window.title("IP - Servidor de Nomes")
 nameServerGui.window.geometry("300x100")
 
+# Label
+label = tk.Label(nameServerGui.window, text="IP do Servidor de Nomes")
+label.pack(pady=1)
+
 # Campo de entrada
 entry = tk.Entry(nameServerGui.window, width=40)
-entry.pack(pady=10)
+entry.pack(pady=5)
 
 # Botão para submeter a entrada
 buttonSubmit = tk.Button(nameServerGui.window, text="Enviar", command=nameServerGui.get_ip)
