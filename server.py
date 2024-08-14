@@ -8,14 +8,18 @@ import tkinter as tk
 class RemoteServer:
     def __init__(self):
         self.clients = []
+    
+    def register_client(self, clientName):
+        self.clients.append(clientName)
+        print(self.clients)
 
 class NameServer:
     def __init__(self):
         self.ip     = None
         self.window = None
 
-    def get_ip(self):
-        self.ip = entry.get()
+    def set_ip(self):
+        self.ip = entryNameServer.get()
         if self.ip:
             self.launch_name_server()
             self.launch_remote_server()
@@ -49,19 +53,19 @@ nameServerGui = NameServer()
 
 nameServerGui.window = tk.Tk()
 nameServerGui.window.title("IP - Servidor de Nomes")
-nameServerGui.window.geometry("300x100")
 
+# Set NameServer IP
+# -------------------------------------------------------------------------------------
 # Label
-label = tk.Label(nameServerGui.window, text="IP do Servidor de Nomes")
-label.pack(pady=1)
-
-# Campo de entrada
-entry = tk.Entry(nameServerGui.window, width=40)
-entry.pack(pady=5)
-
-# Botão para submeter a entrada
-buttonSubmit = tk.Button(nameServerGui.window, text="Enviar", command=nameServerGui.get_ip)
-buttonSubmit.pack(pady=5)
+labelNameServer = tk.Label(nameServerGui.window, text="IP do Servidor de Nomes :")
+labelNameServer.grid(column=0, row=1, padx=5, pady=5,  sticky='w')
+# Input
+entryNameServer = tk.Entry(nameServerGui.window)
+entryNameServer.grid(column=1, row=1, columnspan=2, padx=5, pady=5)
+# Button
+buttonSubmitNameServer = tk.Button(nameServerGui.window, text="Criar", command=nameServerGui.set_ip)
+buttonSubmitNameServer.grid(column=3, row=1, padx=5, pady=5)
+# -------------------------------------------------------------------------------------
 
 # Loop principal
 nameServerGui.window.mainloop()
