@@ -58,13 +58,13 @@ nameServerGui.window.title("IP - Servidor de Nomes")
 # -------------------------------------------------------------------------------------
 # Label
 labelNameServer = tk.Label(nameServerGui.window, text="IP do Servidor de Nomes :")
-labelNameServer.grid(column=0, row=1, padx=5, pady=5,  sticky='w')
+labelNameServer.grid(column=0, row=0, padx=5, pady=5, sticky='w')
 # Input
 entryNameServer = tk.Entry(nameServerGui.window)
-entryNameServer.grid(column=1, row=1, columnspan=2, padx=5, pady=5)
+entryNameServer.grid(column=1, row=0, columnspan=2, padx=5, pady=5)
 # Button
 buttonSubmitNameServer = tk.Button(nameServerGui.window, text="Criar", command=nameServerGui.set_ip)
-buttonSubmitNameServer.grid(column=3, row=1, padx=5, pady=5)
+buttonSubmitNameServer.grid(column=3, row=0, padx=5, pady=5, sticky="nsew")
 # -------------------------------------------------------------------------------------
 
 # Loop principal
