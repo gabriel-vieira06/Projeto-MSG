@@ -23,8 +23,7 @@ class Client:
         buttonContactSelect.grid(column=0, row=(3+len(self.contacts)), padx=5, pady=5, sticky="nsew")
 
     def select_contact(self):
-        self.selected_contact = self.contacts
-        print(self.selected_contact)
+        self.proxy.send_message(self.selected_contact, "HELLO")
 
     def change_state(self):
         if buttonState.get():
@@ -82,12 +81,6 @@ buttonState = tk.BooleanVar()
 buttonState.set(True)
 buttonChangeState = tk.Button(clientGui.window, text="Online", command=clientGui.change_state, background="green")
 buttonChangeState.grid(column=0, row=3, columnspan=4, sticky="nsew")
-# -------------------------------------------------------------------------------------
-
-# Chat box
-# -------------------------------------------------------------------------------------
-textChat = tk.Text(clientGui.window)
-textChat.grid(column=1, row=4, rowspan=10, padx=5, pady=5)
 # -------------------------------------------------------------------------------------
 
 # Loop Principal

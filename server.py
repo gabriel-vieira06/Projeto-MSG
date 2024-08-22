@@ -2,16 +2,33 @@ import Pyro4
 import Pyro4.naming
 import threading
 import tkinter as tk
+import pika
+from config.connection_config import amqp_broker_configs
 
 @Pyro4.expose
 @Pyro4.behavior(instance_mode="single")
 class RemoteServer:
     def __init__(self):
-        self.clients = []
+        self.clients        = []
+        self.connection     = pika.BlockingConnection(pika.ConnectionParameters(host=amqp_broker_configs["HOST"],
+                                                                                port=amqp_broker_configs["PORT"],
+                                                                                credentials=pika.PlainCredentials(amqp_broker_configs["USERNAME"], amqp_broker_configs["PASSWORD"]),
+                                                                                virtual_host=amqp_broker_configs["VIRTUAL_HOST"]))
+        self.channel        = self.connection.channel()
+        self.consume_thread = threading.Thread(target=self.channel.start_consuming, daemon=True)
     
     def register_client(self, clientName):
-        self.clients.append(clientName)
-        print(self.clients)
+        if clientName not in self.clients:
+            self.clients.append(clientName)
+            self.channel.queue_declare(queue=clientName)
+            self.channel.basic_consume(queue=clientName, on_message_callback=self.msg_callback, auto_ack=True)
+
+    def msg_callback(self, ch, method, properties, body):
+        print(f" [x] Recebido {body}")
+
+    def send_message(self, destination, message):
+        self.channel.queue_declare(queue=destination)
+        self.channel.basic_publish(exchange='', routing_key=destination, body=message)
 
 class NameServer:
     def __init__(self):
